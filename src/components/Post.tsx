@@ -11,7 +11,7 @@ const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set
 
 export const Post = (props: PostType) => {
     return (
-        <div className="mt-5 text-white w-9/12 flex justify-evenly">
+        <div className="mt-5 text-white w-9/12 flex justify-evenly hover:cursor-pointer mb-10">
             <div className="text-3.5xl">
                 {props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()}<br/>
                 {monthNames[props.date.getMonth()]}

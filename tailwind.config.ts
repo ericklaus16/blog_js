@@ -15,8 +15,10 @@ const config: Config = {
       },
       colors:{
         'green-blog': '#6EEB83',
+        'background': "#272727",
       },
       spacing:{
+        'fullFlex': '102.5rem',
         '200': '48rem',
       },
       fontSize:{

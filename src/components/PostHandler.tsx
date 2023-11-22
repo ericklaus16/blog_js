@@ -5,6 +5,7 @@ import axios from "axios";
 
 export const PostHandler = () => {
     const [posts, setPosts] = useState([]);
+    const [message, setMessage] = useState("Procurando por postagens...");
 
     useEffect(() => {        
         const fetchPosts = async () => {
@@ -13,6 +14,7 @@ export const PostHandler = () => {
                 setPosts(response.data);
             } catch (error) {
                 console.error("Houve um erro ao tentar procurar pelos posts:", error);
+                setMessage("Não há publicações disponíveis...");
             }
         };
 
@@ -34,17 +36,21 @@ export const PostHandler = () => {
                 date={new Date("November 21, 2023")}
             />
             */}
-            <div className="h-200 w-full overflow-auto scrollbar">       
-                {posts.slice(0, 10).map((post) => (
-                    <Post
-                        key={post["id"]}
-                        title={post["title"]}
-                        content={post["body"]}
-                        tags={["programming", "technology"]}
-                        date={new Date(new Date().valueOf() - Math.random()*(1e+12))} // Data aleatoria no momento
-                    />
-                ))}  
-            </div>    
+
+            {posts.length > 0 && 
+                (<div className="h-200 w-full overflow-auto scrollbar">       
+                    {posts.slice(0, 10).map((post) => (
+                        <Post
+                            key={post["id"]}
+                            title={post["title"]}
+                            content={post["body"]}
+                            tags={["programming", "technology"]}
+                            date={new Date(new Date().valueOf() - Math.random()*(1e+12))} // Data aleatoria no momento
+                        />
+                    ))}  
+                </div>)
+            }  
+            {posts.length == 0 && <div className="w-fullFlex h-full flex items-center justify-center"><div className="text-center">{message}</div></div>}
         </div>
     );
 }

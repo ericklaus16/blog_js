@@ -6,7 +6,7 @@ type Props = {
 
 export const ContainerS = ({children}: Props) => {
     return(
-        <div className="flex w-full h-screen justify-between">
+        <div className="flex w-full h-screen justify-between bg-background">
             {children}
         </div>
     );
