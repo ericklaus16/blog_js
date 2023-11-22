@@ -1,11 +1,13 @@
+import { SideMenu } from "@/components/SideMenu";
 import { PostHandler } from "@/components/PostHandler";
+import { ContainerS } from "@/components/ContainerS";
 
 const Page = () => {
   return (
-    <div>
-      <h1 className="font-bold text-2xl">Posts atuais:</h1>
+    <ContainerS>
+      <SideMenu />
       <PostHandler />
-    </div>
+    </ContainerS>
   );
 }
 
