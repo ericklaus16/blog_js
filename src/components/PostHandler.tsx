@@ -1,5 +1,5 @@
 "use client";
-import { Post } from "./Post";
+import { Post } from "./PostComponent";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -44,6 +44,7 @@ export const PostHandler = () => {
                             key={post["id"]}
                             title={post["title"]}
                             content={post["body"]}
+                            postId={post["id"]}
                             tags={["programming", "technology"]}
                             date={new Date(new Date().valueOf() - Math.random()*(1e+12))} // Data aleatoria no momento
                         />

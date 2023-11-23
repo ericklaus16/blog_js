@@ -45,3 +45,7 @@ body {
     background: #6EEB83;
   }
 }
+
+.has-dropcap::first-letter {
+  font-size: 6rem;
+}
