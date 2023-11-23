@@ -21,10 +21,19 @@ const config: Config = {
       spacing:{
         'fullFlex': '102.5rem',
         '200': '48rem',
-        '73pc': '73%',
+        'postsHeightMobileSmall': '40rem',
+        'postsHeightMobileMed': '48rem',
+        '76pc': '76%',
       },
       fontSize:{
         '3.5xl': '1.8rem'
+      },
+      screens:{
+        'buttons': '410px',
+        'sm': '415px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
       }
     },
   },

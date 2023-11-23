@@ -17,19 +17,23 @@ export const Post = (props: PostType) => {
         <Link 
         href={{pathname: "/post/[id]"}} 
         as={`/post/${props.postId}`} 
-        className="mt-10 text-white w-9/12 flex justify-evenly hover:cursor-pointer"
+        className="mt-10 text-white w-12/12 sm:w-9/12 flex flex-col-reverse sm:flex-col justify-evenly hover:cursor-pointer"
         target={"_blank"}
         >
-            <div className="text-3.5xl">
+            <div className="text-3.5xl hidden sm:block"> 
                 {props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()}<br/>
                 {monthNames[props.date.getMonth()]}
+            </div>
+            <div className="text-base pt-3 block sm:hidden">
+                <p>{props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()} {monthNames[props.date.getMonth()]} {props.date.getFullYear()}</p>
+
             </div>
             <div className="w-9/12">
                 <p className="text-green-blog text-2xl">{props.title}</p><br/>
                 <p className="text-base">{props.content}</p>
-                <div className="w-10/12 mt-4">
-                    {props.tags.map((tag) => (
-                        <Tag name={tag}/>
+                <div className="flex w-12/12 mt-4">
+                    {props.tags.map((tag, index) => (
+                        <Tag name={tag} key={index}/>
                     ))}
                 </div>
             </div>
