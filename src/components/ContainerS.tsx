@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import "../styles/container.css";
 
 type Props = {
     children: ReactNode;
@@ -6,7 +7,7 @@ type Props = {
 
 export const ContainerS = ({ children }: Props) => {
     return (
-        <div className="flex flex-col-reverse sm:flex-row w-screen sm:w-full h-screen justify-between bg-background">
+        <div className="container">
             {children}
         </div>
     );

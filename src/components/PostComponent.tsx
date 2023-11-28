@@ -1,5 +1,6 @@
 import { Tag } from "./Tag";
 import Link from "next/link";
+import "../styles/post.css";
 
 type PostType = {
     title: string;
@@ -17,20 +18,20 @@ export const Post = (props: PostType) => {
         <Link 
         href={{pathname: "/post/[id]"}} 
         as={`/post/${props.postId}`} 
-        className="mt-10 text-white w-12/12 sm:w-9/12 flex flex-col-reverse sm:flex-col justify-evenly hover:cursor-pointer"
+        className="post"
         target={"_blank"}
         >
-            <div className="text-3.5xl hidden sm:block"> 
+            <div className="text-3.5xl commonDate"> 
                 {props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()}<br/>
                 {monthNames[props.date.getMonth()]}
             </div>
-            <div className="text-base pt-3 block sm:hidden">
+            <div className="text-base pt-3 completeDate">
                 <p>{props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()} {monthNames[props.date.getMonth()]} {props.date.getFullYear()}</p>
 
             </div>
             <div className="w-9/12">
-                <p className="text-green-blog text-2xl">{props.title}</p><br/>
-                <p className="text-base">{props.content}</p>
+                <p className="text-green-blog title">{props.title}</p><br/>
+                <p className="content">{props.content}</p>
                 <div className="flex w-12/12 mt-4">
                     {props.tags.map((tag, index) => (
                         <Tag name={tag} key={index}/>

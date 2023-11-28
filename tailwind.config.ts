@@ -14,14 +14,16 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors:{
-        'green-blog': '#6EEB83',
+        'green-blog': '#0a70b8',
         'background': "#272727",
         'subtitle-gray': "#a5a5a5",
       },
       spacing:{
+        'smallPostList': '40rem',
         'fullFlex': '102.5rem',
         '200': '48rem',
-        'postsHeightMobileSmall': '40rem',
+        '400': '52rem',
+        'postsHeightMobileSmall': '44rem',
         'postsHeightMobileMed': '48rem',
         '76pc': '76%',
       },

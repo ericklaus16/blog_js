@@ -1,5 +1,6 @@
 import { Lexend_Deca } from "next/font/google";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "../styles/sidemenu.css";
 
 const lexend_deca = Lexend_Deca({
     subsets: ['latin'],
@@ -8,14 +9,14 @@ const lexend_deca = Lexend_Deca({
 
 export const SideMenu = () => {
     return (
-        <div className={`${lexend_deca.className} w-full buttons:pb-12 sm:pb-10 sm:w-24 border-t sm:border-r border-green-blog flex flex-row sm:flex-col items-center justify-evenly text-base sm:text-xl`}>
-            <div className="text-center mt-2 mb-2">
-                <i className="bi-search text-green-blog text-xl sm:text-base"></i>
-                <p className="hidden sm:block">search</p>
+        <div className={`${lexend_deca.className} sidemenu`}>
+            <div className="text-center">
+                <i className="bi-search text-green-blog"></i>
+                <p className="menuText">search</p>
             </div>
-            <div className="text-center mt-2 mb-2">
-                <i className="bi-plus-circle text-green-blog text-xl sm:text-base"></i>
-                <p className="hidden sm:block">add</p>
+            <div className="text-center">
+                <i className="bi-plus-circle text-green-blog"></i>
+                <p className="menuText">add</p>
             </div>
         </div>
     );
