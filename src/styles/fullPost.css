@@ -1,0 +1,45 @@
+.menuPanel {
+    height: 14vh;
+}
+
+.containerFullPost {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+}
+
+.titlePost {
+    font-size: 30px;
+}
+
+.subtitlePost {
+    font-size: 20px;
+}
+
+.postContent {
+    width: 80%;
+    height: 60%;
+    font-size: 16px;
+}
+
+@media (min-width: 728px){
+    .titlePost {
+        font-size: 46px;
+    }
+
+    .subtitlePost{
+        font-size: 30px;
+    }
+
+    .postContent {
+        font-size: 22px;
+    }
+}
+/*
+max-w-7xl h-3/6 text-xl
+w-screen h-screen flex items-center justify-center flex-col bg-background
+*/

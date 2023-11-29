@@ -13,6 +13,18 @@
     color: #FFF;
 }
 
+.input {
+    padding: 1vh;
+    margin-bottom: 2vh;
+    border: 1px solid #0a70b8;
+    border-radius: 10px;
+    color: #5a5a5a;
+}
+
+.textArea {
+    width: 100%;
+}
+
 @media (max-width: 1208px) {
     i {
         font-size: 2vh;

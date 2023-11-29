@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { DM_Serif_Display, Lexend_Deca} from "next/font/google";
 import { ContainerS } from "@/components/ContainerS";
 import { SideMenu } from "@/components/SideMenu";
+import "../../../styles/fullPost.css";
 
 const dms_d = DM_Serif_Display({ subsets: ['latin'], weight: "400", variable: "--font-dmsd"});
 const lex_d = Lexend_Deca({subsets: ['latin']});
@@ -26,13 +27,13 @@ const post = ({params}: {params: { id: string}}) => {
     return(
         <ContainerS>
             <SideMenu />        
-            <div className="w-screen h-screen flex items-center justify-center flex-col bg-background">
+            <div className="containerFullPost">
                 <div className="mb-10 w-76pc  text-left">
-                    <p className={`${dms_d.className} text-4xl text-green-blog`}>{post["title"]}</p>
-                    <p className={`${lex_d.className} text-xl font-light text-subtitle-gray`}>written by @erickbms</p>
-                    <p className={`${lex_d.className} text-xl font-light text-subtitle-gray`}>on 27 may 2023</p>
+                    <p className={`${dms_d.className} titlePost text-green-blog`}>{post["title"]}</p>
+                    <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>written by @erickbms</p>
+                    <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>on 27 may 2023</p>
                 </div>
-                <div className="max-w-7xl h-3/6 text-xl has-dropcap overflow-auto scrollbar">
+                <div className="postContent has-dropcap overflow-auto scrollbar">
                     <p>
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque porro velit inventore! Similique, repellendus. Quae assumenda magni commodi, alias delectus libero, temporibus nesciunt expedita qui aliquam animi itaque pariatur facilis?
                     Reprehenderit quas ea labore in corporis quo. Modi praesentium sit eum labore. Quasi sunt quas, ipsa non animi sint temporibus officiis adipisci, deserunt vel ut. Impedit quis beatae ipsam laborum.
