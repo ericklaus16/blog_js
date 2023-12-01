@@ -1,19 +1,23 @@
 "use client";
-import { Post } from "./PostComponent";
+import { Post, PostType } from "./PostComponent";
+import { PostInterface } from "@/context/PostContext";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { TablePagination } from "@mui/material";
 import "../styles/posts.css";
+import { usePostContext } from "@/context/PostContext";
+
 
 export const PostHandler = () => {
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [posts, setPosts] = useState([]);
+    const {addPost} = usePostContext();
+    const {posts} = usePostContext();
     const [message, setMessage] = useState("Procurando por postagens...");
-    const initialized = useRef(false);
     const [showPost, canShowPost] = useState(true);
-    let curPage: number;
 
+    let curPage: number;
+    const initialized = useRef(false);
     useEffect(() => {  
         if(!initialized.current){
             initialized.current = true;
@@ -29,7 +33,18 @@ export const PostHandler = () => {
                 try {
                     const response = await axios.get("http://localhost:8080/posts");
                     console.log(response.data);
-                    setPosts(response.data);
+
+                    // Adiciona os posts ao contexto usando a função addPost
+                    response.data.forEach((postDb: PostInterface) => {
+                        addPost({
+                        id: postDb.id,
+                        title: postDb.title,
+                        content: postDb.content,
+                        tags: postDb.tags,
+                        date: postDb.date,
+                        });
+                    });
+  
                 } catch (error) {
                     console.error("Houve um erro ao tentar procurar pelos posts:", error);
                     setMessage("Não há publicações disponíveis...");
@@ -51,12 +66,12 @@ export const PostHandler = () => {
                 (
                 <div className="">
                     <div className="overflow-auto scrollbar posts">       
-                        {posts.slice((page) * rowsPerPage, (page + 1) * rowsPerPage).map((post) => (
+                        {posts.slice((page) * rowsPerPage, (page + 1) * rowsPerPage).map((post, index) => (
                             <Post
-                                key={post["id"]}
+                                key={post.id || posts.length - 1 - index}
                                 title={post["title"]}
                                 content={post["content"]}
-                                postId={post["id"]}
+                                postId={post["id"] ?? 0}
                                 tags={post["tags"]}
                                 date={post["date"]} // Data aleatoria no momento
                             />

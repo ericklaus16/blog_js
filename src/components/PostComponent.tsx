@@ -16,19 +16,16 @@ export const Post = (props: PostType) => {
     const dateParsed = new Date(props.date.toString());
 
     return (
-        <Link 
-        href={{pathname: "/post/[id]"}} 
-        as={`/post/${props.postId}`} 
-        className="post"
-        target={"_blank"}
-        >
-            <div className="text-3.5xl commonDate"> 
-                {dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()}<br/>
-                {monthNames[dateParsed.getMonth()]}
-            </div>
-            <div className="text-base pt-3 completeDate">
-                <p>{dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()} {monthNames[dateParsed.getMonth()]} {dateParsed.getFullYear()}</p>
-            </div>
+        <div className="post">
+            <Link href={{pathname: "/post/[id]"}} as={`/post/${props.postId}`} target={"_blank"}>
+                <div className="text-3.5xl commonDate"> 
+                    {dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()}<br/>
+                    {monthNames[dateParsed.getMonth()]}
+                </div>
+                <div className="text-base pt-3 completeDate">
+                    <p>{dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()} {monthNames[dateParsed.getMonth()]} {dateParsed.getFullYear()}</p>
+                </div>
+            </Link>
             <div className="w-9/12">
                 <p className="text-green-blog title">{props.title}</p><br/>
                 <p className="content">{props.content}</p>
@@ -38,6 +35,6 @@ export const Post = (props: PostType) => {
                     ))}
                 </div>
             </div>
-        </Link>
+        </div>
     );
 }

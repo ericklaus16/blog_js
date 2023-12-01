@@ -6,6 +6,9 @@ import "../styles/sidemenu.css";
 
 import { Box, Modal, TextField, TextareaAutosize, Typography } from "@mui/material";
 import { Button } from "react-bootstrap";
+import axios from "axios";
+import { usePostContext } from "@/context/PostContext";
+
 
 const lexend_deca = Lexend_Deca({
     subsets: ['latin'],
@@ -14,6 +17,9 @@ const lexend_deca = Lexend_Deca({
 
 export const SideMenu = () => {
     const [showAddModal, setShowAddModal] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const {addPost} = usePostContext();
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -31,7 +37,31 @@ export const SideMenu = () => {
     };
 
     const handleAddNewPost = () => {
-        // TO:DO 
+        axios.post('http://localhost:8080/create', {
+            title: title,
+            content: content
+        }, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+            if(response.status === 200){
+                console.log("Deu certo!");
+                setShowAddModal(false);
+                addPost({
+                    //id será gerado automaticamente
+                    title: title,
+                    content: content,
+                    date: new Date(),
+                    tags: ["tag1", "tag2"],
+                })
+            }
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
 
     return (
@@ -58,8 +88,8 @@ export const SideMenu = () => {
                     Criar novo post:
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <input type="text" placeholder="Título do Post" className="input"/>
-                        <TextareaAutosize placeholder="Comente sobre algo..." className="input textArea"/>
+                        <input type="text" placeholder="Título do Post" className="input" value={title} onChange={name => setTitle(name.target.value)}/>
+                        <TextareaAutosize placeholder="Comente sobre algo..." className="input textArea" value={content} onChange={cont => setContent(cont.target.value)}/>
                         <Button onClick={handleAddNewPost}>Adicionar</Button>
                     </Typography>
                 </Box>
