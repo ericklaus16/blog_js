@@ -27,7 +27,8 @@ export const PostHandler = () => {
     
             const fetchPosts = async () => {
                 try {
-                    const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+                    const response = await axios.get("http://localhost:8080/posts");
+                    console.log(response.data);
                     setPosts(response.data);
                 } catch (error) {
                     console.error("Houve um erro ao tentar procurar pelos posts:", error);
@@ -54,10 +55,10 @@ export const PostHandler = () => {
                             <Post
                                 key={post["id"]}
                                 title={post["title"]}
-                                content={post["body"]}
+                                content={post["content"]}
                                 postId={post["id"]}
-                                tags={["programming", "technology"]}
-                                date={new Date(new Date().valueOf() - Math.random()*(1e+12))} // Data aleatoria no momento
+                                tags={post["tags"]}
+                                date={post["date"]} // Data aleatoria no momento
                             />
                         ))}  
                     </div><br/>

@@ -2,7 +2,7 @@ import { Tag } from "./Tag";
 import Link from "next/link";
 import "../styles/post.css";
 
-type PostType = {
+export type PostType = {
     title: string;
     content: string;
     date: Date;
@@ -10,9 +10,10 @@ type PostType = {
     postId: number;
 }
 
-const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 export const Post = (props: PostType) => {
+    const dateParsed = new Date(props.date.toString());
 
     return (
         <Link 
@@ -22,12 +23,11 @@ export const Post = (props: PostType) => {
         target={"_blank"}
         >
             <div className="text-3.5xl commonDate"> 
-                {props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()}<br/>
-                {monthNames[props.date.getMonth()]}
+                {dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()}<br/>
+                {monthNames[dateParsed.getMonth()]}
             </div>
             <div className="text-base pt-3 completeDate">
-                <p>{props.date.getDate() < 10 ? "0" + props.date.getDate() : props.date.getDate()} {monthNames[props.date.getMonth()]} {props.date.getFullYear()}</p>
-
+                <p>{dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()} {monthNames[dateParsed.getMonth()]} {dateParsed.getFullYear()}</p>
             </div>
             <div className="w-9/12">
                 <p className="text-green-blog title">{props.title}</p><br/>

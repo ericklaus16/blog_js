@@ -13,6 +13,10 @@
     color: #FFF;
 }
 
+i:hover {
+    cursor: pointer;
+}
+
 .input {
     width: 100%;
     padding: 1vh;
