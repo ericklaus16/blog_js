@@ -1,15 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Post, PostType } from "@/components/PostComponent";
+import { Post } from "@/components/PostComponent";
 import { SideMenu } from "@/components/SideMenu";
 
 import "../../../styles/category.css";
 
 import axios from "axios";
 import { ContainerS } from "@/components/ContainerS";
+import { PostInterface, PostProvider } from "@/context/PostContext";
 
 const Page = ({ params }: { params: { category: string } }) => {
-  const [posts, setPosts] = useState<PostType[]>([]); // Alterei para um array de PostType
+  const [posts, setPosts] = useState<PostInterface[]>([]); // Alterei para um array de PostType
   const [message, setMessage] = useState<string>();
 
   useEffect(() => {
@@ -30,26 +31,28 @@ const Page = ({ params }: { params: { category: string } }) => {
   }, []);
 
   return (
-    <ContainerS>
-      <SideMenu />
-      {posts && (
-        <div className="postsCategoryContainer">
-          <p>Listando todos os posts da categoria #{params.category.toUpperCase()} </p>
-          {posts.map((post) => (
-            post.tags.includes(params.category) && (
-            <Post 
-                key={post.postId}
-                postId={post.postId}
-                title={post.title}
-                content={post.content}
-                date={post.date}
-                tags={post.tags}
-            />
-          )))}
-        </div>
-      )}
-      {!posts || (posts.length === 0 && <p>{message}</p>)}
-    </ContainerS>
+    <PostProvider>
+      <ContainerS>
+        <SideMenu />
+          {posts && (
+            <div className="postsCategoryContainer">
+              <p>Listando todos os posts da categoria #{params.category.toUpperCase()} </p>
+              {posts.map((post) => (
+                post.tags.includes(params.category) && (
+                <Post 
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    content={post.content}
+                    date={post.date}
+                    tags={post.tags}
+                />
+              )))}
+            </div>
+          )}
+          {!posts || (posts.length === 0 && <p>{message}</p>)}
+      </ContainerS>
+    </PostProvider>
   );
 };
 
