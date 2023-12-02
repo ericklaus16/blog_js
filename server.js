@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const { pool } = require("./dbConfig"); //configuração feita em dbConfig para conectar-se ao postgre
-const cors = require('cors'); //permite que o front-end faça requisições a este back-end
+//const cors = require('cors'); //permite que o front-end faça requisições a este back-end
 const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 8080;
@@ -31,10 +31,12 @@ app.get(`/posts/:id`, async (req, res) => { //id = parâmetro 1
 app.use(bodyParser.json());
 app.post(`/create`, (req, res) => { //inserção de um novo post
     console.log(req.body);
-    let {title, content} = req.body;
+    let {title, content, tags} = req.body;
     let date = new Date; //data gerada no momento
-    let tags = ["tag1", "tag2"]; //tags pré-definidas por enquanto
-
+    let tagsArray = tags.split(",").filter(item => item.length >= 4).map(item => item.trim()); //converte para um array de string separando por vírgula
+    
+    console.log(tagsArray);
+    console.log(tagsArray.length);
     //verificação básica de erros
     if (!title || !content) {
         res.status(500).send("Preencha todos os campos.");
@@ -42,14 +44,49 @@ app.post(`/create`, (req, res) => { //inserção de um novo post
         res.status(500).send("O título deve ter ao menos 4 caracteres.");
     }else if (content.length < 10) {
         res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
+    }else if (tagsArray.length < 1) {
+        res.status(500).send("Adicione ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres");
     }else {
         pool.query (
             `INSERT INTO public.dadosblogjs (title, content, date, tags)
             VALUES ($1, $2, $3, $4)
             RETURNING id`,
-            [title, content, date, tags],
+            [title, content, date, tagsArray],
         );
         
         res.sendStatus(200);
     }
 })
+
+app.get(`/posts/:id/remove`, async (req, res) => { //um esboço de como será a remoção de posts
+    //let rem = true;
+    let rem = false;
+    if (rem) {
+        await pool.query( //deleta o post
+            `DELETE FROM public.dadosblogjs WHERE id = $1`,
+            [req.params.id],
+            (err, res) => {
+                if (err) {
+                    throw err;
+                }
+                console.log(res);
+            }
+        )
+
+        await pool.query( //deleta os comentários do post
+            `DELETE FROM public.comentarios WHERE id = $1`,
+            [req.params.id],
+            (err, res) => {
+                if (err) {
+                    throw err;
+                }
+                console.log(res);
+            }
+        )
+        console.log("Remoção feita com sucesso.");
+        res.redirect("/posts");
+    }else {
+        console.log("Cliente não confirmou a remoção.");
+        res.redirect("/posts/" + req.params.id);
+    }
+});
