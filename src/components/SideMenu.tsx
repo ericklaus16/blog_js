@@ -19,6 +19,7 @@ export const SideMenu = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [tags, setTags] = useState("");
     const {addPost} = usePostContext();
 
     const style = {
@@ -50,13 +51,17 @@ export const SideMenu = () => {
             if(response.status === 200){
                 console.log("Deu certo!");
                 setShowAddModal(false);
+                const tagsArray = tags.split(",").map(item=> item.trim());
                 addPost({
                     //id será gerado automaticamente
                     title: title,
                     content: content,
                     date: new Date(),
-                    tags: ["tag1", "tag2"],
+                    tags: tagsArray,
                 })
+                setTitle("");
+                setContent("");
+                setTags("");
             }
         })
         .catch(error => {
@@ -90,6 +95,7 @@ export const SideMenu = () => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <input type="text" placeholder="Título do Post" className="input" value={title} onChange={name => setTitle(name.target.value)}/>
                         <TextareaAutosize placeholder="Comente sobre algo..." className="input textArea" value={content} onChange={cont => setContent(cont.target.value)}/>
+                        <input type="text" placeholder="Tags do post... ex: programming, technology, culture" value={tags} className="input" onChange={text => setTags(text.target.value)}/>
                         <Button onClick={handleAddNewPost}>Adicionar</Button>
                     </Typography>
                 </Box>

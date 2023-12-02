@@ -1,23 +1,16 @@
 import { Tag } from "./Tag";
 import Link from "next/link";
 import "../styles/post.css";
-
-export type PostType = {
-    title: string;
-    content: string;
-    date: Date;
-    tags: string[];
-    postId: number;
-}
+import { PostInterface } from "@/context/PostContext";
 
 const monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-export const Post = (props: PostType) => {
+export const Post = (props: PostInterface) => {
     const dateParsed = new Date(props.date.toString());
 
     return (
         <div className="post">
-            <Link href={{pathname: "/post/[id]"}} as={`/post/${props.postId}`} target={"_blank"}>
+            <Link href={{pathname: "/post/[id]"}} as={`/post/${props.id}`} target={"_blank"}>
                 <div className="text-3.5xl commonDate"> 
                     {dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()}<br/>
                     {monthNames[dateParsed.getMonth()]}

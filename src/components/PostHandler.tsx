@@ -1,5 +1,5 @@
 "use client";
-import { Post, PostType } from "./PostComponent";
+import { Post } from "./PostComponent";
 import { PostInterface } from "@/context/PostContext";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -45,11 +45,11 @@ export const PostHandler = () => {
                     // Adiciona os posts ao contexto usando a função addPost
                     response.data.forEach((postDb: PostInterface) => {
                         addPost({
-                        id: postDb.id,
-                        title: postDb.title,
-                        content: postDb.content,
-                        tags: postDb.tags,
-                        date: postDb.date,
+                            id: postDb.id,
+                            title: postDb.title,
+                            content: postDb.content,
+                            tags: postDb.tags,
+                            date: postDb.date,
                         });
                     });
   
@@ -79,7 +79,7 @@ export const PostHandler = () => {
                                 key={post.id || posts.length - 1 - index}
                                 title={post["title"]}
                                 content={post["content"]}
-                                postId={post["id"] ?? 0}
+                                id={post["id"] ?? 0}
                                 tags={post["tags"]}
                                 date={post["date"]}
                             />
