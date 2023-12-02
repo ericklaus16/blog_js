@@ -25,9 +25,17 @@ export const PostHandler = () => {
             const queryParameters = new URLSearchParams(window.location.search);
             const pageQueryParam = queryParameters.get("page");
             const rowsQueryParam = queryParameters.get("rows");
-            curPage = Number.parseInt(pageQueryParam || "0", 10);
-            setRowsPerPage(Number.parseInt(rowsQueryParam || "0", 10));
-            setPage(curPage);
+            if(pageQueryParam){
+                curPage = Number.parseInt(pageQueryParam || "0", 10);
+                setPage(curPage);
+            } else {
+                setPage(0);
+            }
+            if(rowsQueryParam){
+                setRowsPerPage(Number.parseInt(rowsQueryParam || "0", 10));
+            } else {
+                setRowsPerPage(10);
+            }
     
             const fetchPosts = async () => {
                 try {
@@ -73,7 +81,7 @@ export const PostHandler = () => {
                                 content={post["content"]}
                                 postId={post["id"] ?? 0}
                                 tags={post["tags"]}
-                                date={post["date"]} // Data aleatoria no momento
+                                date={post["date"]}
                             />
                         ))}  
                     </div><br/>
