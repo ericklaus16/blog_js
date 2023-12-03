@@ -18,14 +18,23 @@ app.listen(PORT, () => {
 })
 
 app.get("/posts", async (req, res) => {
-    console.log("Retornando posts para aplicação...");
-    const posts = await pool.query(`SELECT * FROM public.dadosblogjs`);
-    return res.json(posts.rows);
+    try {
+        console.log("Retornando posts para aplicação...");
+        //dados são enviados em ordem decrescente para que os posts mais recentes apareçam primeiro na página
+        const posts = await pool.query(`SELECT * FROM public.dadosblogjs ORDER BY date DESC`);
+        return res.json(posts.rows);
+    } catch(err) {
+        res.status(404).send("Falha encontrada no armazenamento de dados.");
+    }
 });
 
 app.get(`/posts/:id`, async (req, res) => { //id = parâmetro 1
-    const posts = await pool.query(`SELECT * FROM public.dadosblogjs`);
-    return res.json(posts.rows[req.params.id - 1]);
+    try {
+        const posts = await pool.query(`SELECT * FROM public.dadosblogjs WHERE id = ${req.params.id}`);
+        return res.json(posts.rows[0]);
+    } catch(err) {
+        res.status(404).send("Nenhum post foi encontrado nesta página.");
+    }
 });
 
 app.use(bodyParser.json());
@@ -58,11 +67,11 @@ app.post(`/create`, (req, res) => { //inserção de um novo post
     }
 })
 
-app.get(`/posts/:id/remove`, async (req, res) => { //um esboço de como será a remoção de posts
+app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoção de posts
     //let rem = true;
     let rem = false;
     if (rem) {
-        await pool.query( //deleta o post
+        pool.query( //deleta o post
             `DELETE FROM public.dadosblogjs WHERE id = $1`,
             [req.params.id],
             (err, res) => {
@@ -73,8 +82,8 @@ app.get(`/posts/:id/remove`, async (req, res) => { //um esboço de como será a 
             }
         )
 
-        await pool.query( //deleta os comentários do post
-            `DELETE FROM public.comentarios WHERE id = $1`,
+        pool.query( //deleta os comentários do post
+            `DELETE FROM public.comentarios WHERE postId = $1`,
             [req.params.id],
             (err, res) => {
                 if (err) {
@@ -88,5 +97,24 @@ app.get(`/posts/:id/remove`, async (req, res) => { //um esboço de como será a 
     }else {
         console.log("Cliente não confirmou a remoção.");
         res.redirect("/posts/" + req.params.id);
+    }
+});
+
+app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será a criação de comentários
+    console.log(req.body);
+    let {author, comment} = req.body;
+    if (!author || !comment) {
+        res.status(500).send("Preencha todos os campos.");
+    }else if (author.length < 4) {
+        res.status(500).send("O nome do usuário deve ter ao menos 4 caracteres.");
+    }else if (comment.length < 10) {
+        res.status(500).send("O comentário deve ter ao menos 10 caracteres.");
+    }else {
+        let postId = req.params.id;
+        let date = new Date;
+        pool.query(`INSERT INTO public.comentarios (author, comment, date, postId)
+        VALUES ($1, $2, $3, $4) RETURNING id`, [author, comment, date, postId]);
+
+        res.sendStatus(200);
     }
 });
