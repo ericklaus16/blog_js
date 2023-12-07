@@ -21,6 +21,8 @@ export const SideMenu = () => {
     const [content, setContent] = useState("");
     const [tags, setTags] = useState("");
     const {addPost} = usePostContext();
+    const [msgError, setMsgError] = useState("");
+    const [author, setAuthor] = useState("");
 
     const style = {
         position: 'absolute' as 'absolute',
@@ -40,7 +42,9 @@ export const SideMenu = () => {
     const handleAddNewPost = () => {
         axios.post('http://localhost:8080/create', {
             title: title,
-            content: content
+            content: content,
+            tags: tags,
+            author: author
         }, {
           headers: {
             'Accept': 'application/json',
@@ -58,6 +62,7 @@ export const SideMenu = () => {
                     content: content,
                     date: new Date(),
                     tags: tagsArray,
+                    author: author,
                 })
                 setTitle("");
                 setContent("");
@@ -66,6 +71,7 @@ export const SideMenu = () => {
         })
         .catch(error => {
           console.error(error);
+          setMsgError(error.response.data);
         });
     }
 
@@ -89,13 +95,15 @@ export const SideMenu = () => {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={{...style}}>
+                    <ul>{msgError}</ul>
                     <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight: "bold"}}>
                     Criar novo post:
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <input type="text" placeholder="Título do Post" className="input" value={title} onChange={name => setTitle(name.target.value)}/>
                         <TextareaAutosize placeholder="Comente sobre algo..." className="input textArea" value={content} onChange={cont => setContent(cont.target.value)}/>
-                        <input type="text" placeholder="Tags do post... ex: programming, technology, culture" value={tags} className="input" onChange={text => setTags(text.target.value)}/>
+                        <input type="text" placeholder="Tags do post... ex: programming, technology, culture" className="input" value={tags} onChange={text => setTags(text.target.value)}/>
+                        <input type="text" placeholder="Digite o seu nome de usuário" className="input" value={author} onChange={author => setAuthor(author.target.value)}/>
                         <Button onClick={handleAddNewPost}>Adicionar</Button>
                     </Typography>
                 </Box>

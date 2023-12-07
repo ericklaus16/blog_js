@@ -50,6 +50,7 @@ export const PostHandler = () => {
                             content: postDb.content,
                             tags: postDb.tags,
                             date: postDb.date,
+                            author: postDb.author,
                         });
                     });
   
@@ -82,6 +83,7 @@ export const PostHandler = () => {
                                 id={post["id"] ?? 0}
                                 tags={post["tags"]}
                                 date={post["date"]}
+                                author={post["author"]}
                             />
                         ))}  
                     </div><br/>

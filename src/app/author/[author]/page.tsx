@@ -9,8 +9,8 @@ import axios from "axios";
 import { ContainerS } from "@/components/ContainerS";
 import { PostInterface, PostProvider } from "@/context/PostContext";
 
-const Page = ({ params }: { params: { category: string } }) => {
-  const [posts, setPosts] = useState<PostInterface[]>([]); // Alterei para um array de PostType
+const Page = ({ params }: { params: { author: string } }) => {
+  const [posts, setPosts] = useState<PostInterface[]>([]);
   const [message, setMessage] = useState<string>();
 
   useEffect(() => {
@@ -36,9 +36,9 @@ const Page = ({ params }: { params: { category: string } }) => {
         <SideMenu />
           {posts && (
             <div className="postsCategoryContainer">
-              <p>Listando todos os posts da categoria #{params.category.toUpperCase()} </p>
+              <p>Listando todos os posts feitos pelo autor @{params.author.toLowerCase()} </p>
               {posts.map((post) => (
-                post.tags.includes(params.category) && (
+                post.author.includes(params.author) && (
                 <Post 
                     key={post.id}
                     id={post.id}

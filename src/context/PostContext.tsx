@@ -6,6 +6,7 @@ export interface PostInterface {
   title: string;
   content: string;
   tags: string[];
+  author: string;
   date: Date;
 }
 
