@@ -130,6 +130,8 @@ app.post(`/posts/:id/edit`, (req, res) => { //edição de posts
     console.log(editedTitle);
     console.log(editedContent);
     console.log(editedTags);
+
+
     if (!editedTitle || !editedContent || !editedTags) {
         res.status(500).send("Todos os campos devem estar preenchidos.");
     }else if (editedTitle.length < 4) {
@@ -139,11 +141,18 @@ app.post(`/posts/:id/edit`, (req, res) => { //edição de posts
     }else if (editedTags.length < 1) {
         res.status(500).send("Deve haver ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
     }else {
+        console.log("Editando post...");
         pool.query(
-            `UPDATE public.comentarios
+            `UPDATE public.dadosblogjs
             SET title = $1, content = $2, tags = $3
             WHERE id = $4`,
-            [editedTitle], [editedContent], [editedTags], [req.params.id]
+            [editedTitle, editedContent, editedTags, req.params.id],
+            (err, res) => {
+                if (err) {
+                    throw err;
+                }
+                console.log(res);
+            }
         );
 
         res.sendStatus(200);
