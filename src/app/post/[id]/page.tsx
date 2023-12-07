@@ -31,7 +31,7 @@ const post = ({params}: {params: { id: string}}) => {
 
                 setTitle(response.data.title);
                 setContent(response.data.content);
-                setTags(response.data.tags);
+                setTags(response.data.tags.join());
             } catch (error) {
                 console.error("Houve um erro ao tentar procurar pelos posts:", error);
             }
@@ -61,9 +61,9 @@ const post = ({params}: {params: { id: string}}) => {
 
     const handleEditPost = () => {
         axios.post(`http://localhost:8080/posts/${Number.parseInt(params.id)}/edit`, {
-            title: title,
-            content: content,
-            tags: tags
+            editedTitle: title,
+            editedContent: content,
+            editedTags: tags.split(",").filter(item => item.length >= 4).map(item => item.trim()),
         }, {
           headers: {
             'Accept': 'application/json',
