@@ -1,15 +1,16 @@
 const express = require('express');
 const app = express();
 const { pool } = require("./dbConfig"); //configuração feita em dbConfig para conectar-se ao postgre
-//const cors = require('cors'); //permite que o front-end faça requisições a este back-end
+const cors = require('cors'); //permite que o front-end faça requisições a este back-end
 const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT || 8080;
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
-    res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization, Origin, X-Auth-Token");
+    app.use(cors());
     next();
 })
 
@@ -40,7 +41,7 @@ app.get(`/posts/:id`, async (req, res) => { //id = parâmetro 1
 app.use(bodyParser.json());
 app.post(`/create`, (req, res) => { //inserção de um novo post
     console.log(req.body);
-    let {title, content, tags} = req.body;
+    let {title, content, tags, author} = req.body;
     let date = new Date; //data gerada no momento
     let tagsArray = tags.split(",").filter(item => item.length >= 4).map(item => item.trim()); //converte para um array de string separando por vírgula
     
@@ -54,18 +55,20 @@ app.post(`/create`, (req, res) => { //inserção de um novo post
     }else if (content.length < 10) {
         res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
     }else if (tagsArray.length < 1) {
-        res.status(500).send("Adicione ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres");
+        res.status(500).send("Adicione ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
+    }else if (author.length < 4) {
+        res.status(500).send("Digite um apelido que tenha ao menos 4 caracteres.");
     }else {
         pool.query (
-            `INSERT INTO public.dadosblogjs (title, content, date, tags)
-            VALUES ($1, $2, $3, $4)
+            `INSERT INTO public.dadosblogjs (title, content, date, tags, author)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING id`,
-            [title, content, date, tagsArray],
+            [title, content, date, tagsArray, author],
         );
         
         res.sendStatus(200);
     }
-})
+});
 
 app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoção de posts
     //let rem = true;
@@ -101,6 +104,7 @@ app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoç
 });
 
 app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será a criação de comentários
+    res.redirect(`/posts`);
     console.log(req.body);
     let {author, comment} = req.body;
     if (!author || !comment) {
@@ -114,6 +118,33 @@ app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será 
         let date = new Date;
         pool.query(`INSERT INTO public.comentarios (author, comment, date, postId)
         VALUES ($1, $2, $3, $4) RETURNING id`, [author, comment, date, postId]);
+
+        res.sendStatus(200);
+    }
+});
+
+app.post(`/posts/:id/edit`, (req, res) => { //edição de posts
+    console.log(req.body);
+    let {editedTitle, editedContent, editedTags} = req.body;
+
+    console.log(editedTitle);
+    console.log(editedContent);
+    console.log(editedTags);
+    if (!editedTitle || !editedContent || !editedTags) {
+        res.status(500).send("Todos os campos devem estar preenchidos.");
+    }else if (editedTitle.length < 4) {
+        res.status(500).send("O título deve ter ao menos 4 caracteres.");
+    }else if (editedContent.length < 10) {
+        res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
+    }else if (editedTags.length < 1) {
+        res.status(500).send("Deve haver ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
+    }else {
+        pool.query(
+            `UPDATE public.comentarios
+            SET title = $1, content = $2, tags = $3
+            WHERE id = $4`,
+            [editedTitle], [editedContent], [editedTags], [req.params.id]
+        );
 
         res.sendStatus(200);
     }
