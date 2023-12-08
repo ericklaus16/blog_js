@@ -60,10 +60,13 @@ const post = ({params}: {params: { id: string}}) => {
     };
 
     const handleEditPost = () => {
+        const tagsArray = tags.split(",").map(item=> item.trim());
+        const tagsArrayFiltered = tags.split(",").filter(item=> item.length >= 4).map(item=> item.trim());
         axios.post(`http://localhost:8080/posts/${Number.parseInt(params.id)}/edit`, {
             editedTitle: title,
             editedContent: content,
-            editedTags: tags.split(",").filter(item => item.length >= 4).map(item => item.trim()),
+            editedTags: tagsArrayFiltered,
+            editedTagsOriginalSize: tagsArray.length
         }, {
           headers: {
             'Accept': 'application/json',

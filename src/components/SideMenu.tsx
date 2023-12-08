@@ -40,10 +40,13 @@ export const SideMenu = () => {
     };
 
     const handleAddNewPost = () => {
+        const tagsArray = tags.split(",").map(item=> item.trim());
+        const tagsArrayFiltered = tags.split(",").filter(item=> item.length >= 4).map(item=> item.trim());
         axios.post('http://localhost:8080/create', {
             title: title,
             content: content,
-            tags: tags,
+            tags: tagsArrayFiltered,
+            tagsOriginalSize: tagsArray.length,
             author: author
         }, {
           headers: {
@@ -55,13 +58,12 @@ export const SideMenu = () => {
             if(response.status === 200){
                 console.log("Deu certo!");
                 setShowAddModal(false);
-                const tagsArray = tags.split(",").map(item=> item.trim());
                 addPost({
                     //id será gerado automaticamente
                     title: title,
                     content: content,
                     date: new Date(),
-                    tags: tagsArray,
+                    tags: tagsArrayFiltered,
                     author: author,
                 })
                 setTitle("");
