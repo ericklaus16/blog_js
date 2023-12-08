@@ -41,20 +41,18 @@ app.get(`/posts/:id`, async (req, res) => { //id = parâmetro 1
 app.use(bodyParser.json());
 app.post(`/create`, (req, res) => { //inserção de um novo post
     console.log(req.body);
-    let {title, content, tags, author} = req.body;
+    let {title, content, tags, tagsOriginalSize, author} = req.body;
     let date = new Date; //data gerada no momento
-    let tagsArray = tags.split(",").filter(item => item.length >= 4).map(item => item.trim()); //converte para um array de string separando por vírgula
+    let tagsSize = tags.length;
     
-    console.log(tagsArray);
-    console.log(tagsArray.length);
     //verificação básica de erros
-    if (!title || !content) {
+    if (!title || !content || !tags || !author) {
         res.status(500).send("Preencha todos os campos.");
     }else if (title.length < 4) {
         res.status(500).send("O título deve ter ao menos 4 caracteres.");
     }else if (content.length < 10) {
         res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
-    }else if (tagsArray.length < 1) {
+    }else if (tags.length < 1 || tagsSize != tagsOriginalSize) {
         res.status(500).send("Adicione ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
     }else if (author.length < 4) {
         res.status(500).send("Digite um apelido que tenha ao menos 4 caracteres.");
@@ -63,7 +61,7 @@ app.post(`/create`, (req, res) => { //inserção de um novo post
             `INSERT INTO public.dadosblogjs (title, content, date, tags, author)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING id`,
-            [title, content, date, tagsArray, author],
+            [title, content, date, tags, author],
         );
         
         res.sendStatus(200);
@@ -125,12 +123,13 @@ app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será 
 
 app.post(`/posts/:id/edit`, (req, res) => { //edição de posts
     console.log(req.body);
-    let {editedTitle, editedContent, editedTags} = req.body;
+    let {editedTitle, editedContent, editedTags, editedTagsOriginalSize} = req.body;
 
     console.log(editedTitle);
     console.log(editedContent);
     console.log(editedTags);
 
+    let editedTagsSize = editedTags.length;
 
     if (!editedTitle || !editedContent || !editedTags) {
         res.status(500).send("Todos os campos devem estar preenchidos.");
@@ -138,7 +137,7 @@ app.post(`/posts/:id/edit`, (req, res) => { //edição de posts
         res.status(500).send("O título deve ter ao menos 4 caracteres.");
     }else if (editedContent.length < 10) {
         res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
-    }else if (editedTags.length < 1) {
+    }else if (editedTagsSize < 1 || editedTagsSize != editedTagsOriginalSize) {
         res.status(500).send("Deve haver ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
     }else {
         console.log("Editando post...");
