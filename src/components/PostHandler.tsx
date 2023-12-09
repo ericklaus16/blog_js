@@ -88,8 +88,7 @@ export const PostHandler = () => {
                             date={post["date"]}
                             author={post["author"]}
                         />
-                    ))
-                }
+                    ))}
                     </div><br/>
                     <TablePagination
                     style={{color: "white"}}

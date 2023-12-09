@@ -12,6 +12,10 @@
     color: white;
 }
 
+.content {
+    width: 80%;
+}
+
 .headerPost {
     display: flex;
     width: 80%;
@@ -26,10 +30,29 @@
     font-size: 20px;
 }
 
+.postAndComments {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    height: 100vh;
+    align-items: center;
+}
+
 .postContent {
     width: 80%;
-    height: 60%;
+    height: 40vh;
     font-size: 16px;
+}
+
+.commentsArea {
+    border: 1px solid #0a70b8;
+    padding: 1vh 1vw;
+}
+
+.comments {
+    height: 60vh;
+    width: 20vw;
+    margin-top: 1vh;
 }
 
 @media (min-width: 728px){

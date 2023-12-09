@@ -10,12 +10,14 @@ import { PostProvider } from "@/context/PostContext";
 import { Author } from "@/components/Author";
 import { Button } from "react-bootstrap";
 import { Box, Modal, SpeedDial, SpeedDialAction, SpeedDialIcon, TextField, TextareaAutosize, Typography } from "@mui/material";
+import { Comment, CommentType } from "@/components/Comment";
 
 const dms_d = DM_Serif_Display({ subsets: ['latin'], weight: "400", variable: "--font-dmsd"});
 const lex_d = Lexend_Deca({subsets: ['latin']});
 
 const post = ({params}: {params: { id: string}}) => {
     const [post, setPostData] = useState<PostInterface>();
+    const [comments, setComments] = useState<CommentType[]>();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [tags, setTags] = useState("");
@@ -26,7 +28,6 @@ const post = ({params}: {params: { id: string}}) => {
         const fetchPost = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/posts/${Number.parseInt(params.id)}`);
-                console.log(params.id);
                 setPostData(response.data);
 
                 setTitle(response.data.title);
@@ -37,7 +38,20 @@ const post = ({params}: {params: { id: string}}) => {
             }
         }
 
+        const fetchComments = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/comments/${Number.parseInt(params.id)}`);
+                if(response.status === 200){
+                    console.log(response.data);
+                    setComments(response.data);
+                }
+            } catch (error) {
+                console.error("Houve um erro ao tentar procurar pelos comentários:", error);
+            }
+        }
+
         fetchPost();
+        fetchComments();
     }, [params.id]);
 
     const dataParsed = post && post.date ? new Date(post.date.toString()) : null;
@@ -93,9 +107,9 @@ const post = ({params}: {params: { id: string}}) => {
         .then((response) => {
             if(response.status === 200){
                 console.log("Item removido com sucesso!");
-                document.location.assign("/");
             }
         })
+        document.location.assign("/");
     }
 
     const actions = [
@@ -129,38 +143,53 @@ const post = ({params}: {params: { id: string}}) => {
                 </Modal>
 
                 <div className="containerFullPost">
-                    {post && dataParsed && (<>
-                    <div className="headerPost">
-                        <div className="mb-10 w-76pc text-left">
-                            <p className={`${dms_d.className} titlePost text-green-blog`}>{post.title}</p>
-                            <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>written by <Author name={post.author}></Author></p>
-                            <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>on {dataParsed.getDate() < 10 ? "0" + dataParsed.getDate() : dataParsed.getDate()} {monthNames[dataParsed.getMonth()]} {dataParsed.getFullYear()}</p>
+                    {post && dataParsed && (<div className="postAndComments">
+                    <div className="content">
+                        <div className="headerPost">
+                            <div className="mb-10 w-76pc text-left">
+                                <p className={`${dms_d.className} titlePost text-green-blog`}>{post.title}</p>
+                                <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>written by <Author name={post.author}></Author></p>
+                                <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>on {dataParsed.getDate() < 10 ? "0" + dataParsed.getDate() : dataParsed.getDate()} {monthNames[dataParsed.getMonth()]} {dataParsed.getFullYear()}</p>
+                            </div>
+                            
+                            <SpeedDial 
+                                ariaLabel="Post actions" 
+                                icon={<i className="bi-chevron-down"/>}
+                                direction="down"
+                                className="dialButton"
+                                >
+                                    { actions.map((action) => (
+                                        <SpeedDialAction
+                                            key={action.name}
+                                            tooltipTitle={action.name}
+                                            icon={action.icon}
+                                            onClick={action.do}
+                                        />
+                                    ))}
+                            </SpeedDial>
                         </div>
-                        
-                        <SpeedDial 
-                            ariaLabel="Post actions" 
-                            icon={<i className="bi-chevron-down"/>}
-                            direction="down"
-                            className="dialButton"
-                            >
-                                { actions.map((action) => (
-                                    <SpeedDialAction
-                                        key={action.name}
-                                        tooltipTitle={action.name}
-                                        icon={action.icon}
-                                        onClick={action.do}
-                                    />
-                                ))}
-                        </SpeedDial>
-                    </div>
                    
-                    
-                    <div className="postContent has-dropcap overflow-auto scrollbar">
-                        <p>
-                        {post.content}
-                        </p>
+                        <div className="postContent has-dropcap overflow-auto scrollbar">
+                            <p>
+                            {post.content}
+                            </p>
+                        </div>
                     </div>
-                    </>)}
+
+                    <div className="commentsArea">
+                        <p>Comentários:</p>
+                        <div className="comments">
+                        {comments ? comments.map((comment: CommentType, index: number) => (
+                            <Comment
+                                key={index}
+                                author={comment.author}
+                                content={comment.content}
+                                date={comment.date}
+                            />
+                        )) : "Sem comentários disponíveis...."}
+                        </div>
+                    </div>
+                    </div>)}
                 </div>
             </ContainerS>
         </PostProvider>
