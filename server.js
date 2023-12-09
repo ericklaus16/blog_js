@@ -38,8 +38,26 @@ app.get(`/posts/:id`, async (req, res) => { //id = parâmetro 1
     }
 });
 
+app.get(`/comments/:id`, async (req, res) => {
+    try {
+        console.log("Retornando comentários...");
+        const pId = req.params.id;
+        const comments = await pool.query(`SELECT * FROM public.comentarios WHERE "postId" = $1`, [pId]);
+
+
+        if (comments.rows.length > 0) {
+            return res.status(200).json(comments.rows);
+        } else {
+            return res.status(404).send("Nenhum comentário foi encontrado neste post.");
+        }
+    } catch(err) {
+        console.error(err);
+        res.status(500).send("Erro ao buscar comentários.");
+    }
+});
+
 app.use(bodyParser.json());
-app.post(`/create`, (req, res) => { //inserção de um novo post
+app.post(`/create`, async (req, res) => { //inserção de um novo post
     console.log(req.body);
     let {title, content, tags, tagsOriginalSize, author} = req.body;
     let date = new Date; //data gerada no momento
@@ -57,20 +75,21 @@ app.post(`/create`, (req, res) => { //inserção de um novo post
     }else if (author.length < 4) {
         res.status(500).send("Digite um apelido que tenha ao menos 4 caracteres.");
     }else {
-        pool.query (
+        const result = await pool.query (
             `INSERT INTO public.dadosblogjs (title, content, date, tags, author)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING id`,
             [title, content, date, tags, author],
         );
-        
-        res.sendStatus(200);
+
+        const newPostId = result.rows[0].id;
+        res.status(200).json({id: newPostId});
     }
 });
 
 app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoção de posts
     //let rem = true;
-    let rem = false;
+    let rem = true;
     if (rem) {
         pool.query( //deleta o post
             `DELETE FROM public.dadosblogjs WHERE id = $1`,
@@ -84,7 +103,7 @@ app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoç
         )
 
         pool.query( //deleta os comentários do post
-            `DELETE FROM public.comentarios WHERE postId = $1`,
+            `DELETE FROM public.comentarios WHERE "postId" = $1`,
             [req.params.id],
             (err, res) => {
                 if (err) {
@@ -93,8 +112,9 @@ app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoç
                 console.log(res);
             }
         )
-        console.log("Remoção feita com sucesso.");
-        res.redirect("/posts");
+        
+        //console.log("Remoção feita com sucesso.");
+
     }else {
         console.log("Cliente não confirmou a remoção.");
         res.redirect("/posts/" + req.params.id);
@@ -102,7 +122,7 @@ app.get(`/posts/:id/remove`, (req, res) => { //um esboço de como será a remoç
 });
 
 app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será a criação de comentários
-    res.redirect(`/posts`);
+    //res.redirect(`/posts`);
     console.log(req.body);
     let {author, comment} = req.body;
     if (!author || !comment) {
@@ -114,7 +134,7 @@ app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será 
     }else {
         let postId = req.params.id;
         let date = new Date;
-        pool.query(`INSERT INTO public.comentarios (author, comment, date, postId)
+        pool.query(`INSERT INTO public.comentarios (author, comment, date, "postId")
         VALUES ($1, $2, $3, $4) RETURNING id`, [author, comment, date, postId]);
 
         res.sendStatus(200);
