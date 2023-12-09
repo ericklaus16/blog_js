@@ -24,6 +24,7 @@ const post = ({params}: {params: { id: string}}) => {
     const [msgError, setMsgError] = useState("");
     const [showEditModal, setShowEditModal] = useState(false);
     const [showCommentsModal, setShowCommentsModal] = useState(false);
+    const [showRemoveModal, setShowRemoveModal] = useState(false);
 
     const [commentAuthor, setCommentAuthor] = useState("");
     const [commentContent, setCommentContent] = useState("");
@@ -169,7 +170,7 @@ const post = ({params}: {params: { id: string}}) => {
 
     const actions = [
         { icon: <i className="bi-pencil-fill"/>, name: 'Editar', do: () => setShowEditModal(true)},
-        { icon: <i className="bi-trash3-fill"/>, name: 'Remover', do: handleRemovePost},
+        { icon: <i className="bi-trash3-fill"/>, name: 'Remover', do: () => setShowRemoveModal(true)},
     ];
 
 
@@ -177,7 +178,7 @@ const post = ({params}: {params: { id: string}}) => {
         <PostProvider>
             <ContainerS>
                 <SideMenu />
-                <Modal
+                <Modal //modal para editar posts
                     open={showEditModal}
                     onClose={() => setShowEditModal(false)}
                     aria-labelledby="modal-modal-title"
@@ -193,6 +194,26 @@ const post = ({params}: {params: { id: string}}) => {
                             <TextareaAutosize placeholder="Comente sobre algo..." className="input textArea" value={content} onChange={cont => setContent(cont.target.value)}/>
                             <input type="text" placeholder="Tags do post... ex: programming, technology, culture" className="input" value={tags} onChange={text => setTags(text.target.value)}/>
                             <Button onClick={handleEditPost}>Editar</Button>
+                        </Typography>
+                    </Box>
+                </Modal>
+
+                <Modal //modal para confirmar remoção de um post
+                    open={showRemoveModal}
+                    onClose={() => setShowRemoveModal(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    >
+                    <Box sx={{...style}}>
+                        <ul>{msgError}</ul>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight: "bold"}}>
+                        Deseja realmente remover este post?
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            <Button onClick={handleRemovePost}>Sim</Button>
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            <Button onClick={() => setShowRemoveModal(false)}>Não</Button>
                         </Typography>
                     </Box>
                 </Modal>
