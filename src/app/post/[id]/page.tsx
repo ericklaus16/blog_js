@@ -23,6 +23,10 @@ const post = ({params}: {params: { id: string}}) => {
     const [tags, setTags] = useState("");
     const [msgError, setMsgError] = useState("");
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showCommentsModal, setShowCommentsModal] = useState(false);
+
+    const [commentAuthor, setCommentAuthor] = useState("");
+    const [commentContent, setCommentContent] = useState("");
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -59,6 +63,21 @@ const post = ({params}: {params: { id: string}}) => {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"];
 
     const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: "80%",
+        bgcolor: "#272727",
+        color: "#fff",
+        border: '1px solid #0a70b8',
+        borderRadius: '10px',
+        pt: 2,
+        px: 4,
+        pb: 3,
+    };
+
+    const commentsStyle = {
         position: 'absolute' as 'absolute',
         top: '50%',
         left: '50%',
@@ -110,6 +129,42 @@ const post = ({params}: {params: { id: string}}) => {
             }
         })
         document.location.assign("/");
+    }
+
+    const handleAddComment = () => {
+        console.log("Autor: ", commentAuthor);
+        console.log("Conteúdo: ", commentContent);
+        axios.post(`http://localhost:8080/posts/${params.id}/createComment`, {
+            author: commentAuthor,
+            comment: commentContent,
+        }, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+            if(response.status === 200){
+                console.log("Deu certo!");
+                /*
+                addPost({
+                    id: realId,
+                    title: title,
+                    content: content,
+                    date: new Date(),
+                    tags: tagsArrayFiltered,
+                    author: author,
+                })
+                */
+                setShowCommentsModal(false);
+                setCommentAuthor("");
+                setCommentContent("");
+            }
+        })
+        .catch(error => {
+          console.error(error);
+          setMsgError(error.response.data);
+        });
     }
 
     const actions = [
@@ -176,21 +231,40 @@ const post = ({params}: {params: { id: string}}) => {
                         </div>
                     </div>
 
-                    <div className="commentsArea">
-                        <p>Comentários:</p>
-                        <div className="comments">
-                        {comments ? comments.map((comment: CommentType, index: number) => (
-                            <Comment
-                                key={index}
-                                author={comment.author}
-                                content={comment.content}
-                                date={comment.date}
-                            />
-                        )) : "Sem comentários disponíveis...."}
-                        </div>
-                    </div>
+                    <button className="commentButton" onClick={() => setShowCommentsModal(true)}><i className="bi-chat-dots text-xl"></i></button>
                     </div>)}
                 </div>
+
+                <Modal // Modal dos comentários
+                open={showCommentsModal} 
+                onClose={() => setShowCommentsModal(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={{...commentsStyle}}>
+                    <ul>{msgError}</ul>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight: "bold"}}>
+                    Comentários nesse post:
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="comments">
+                            {comments ? comments.map((comment: CommentType, index: number) => (
+                                <Comment
+                                    key={index}
+                                    author={comment.author}
+                                    content={comment.content}
+                                    date={comment.date}
+                                />
+                            )) : "Sem comentários disponíveis...."}
+                        </div>
+                        <div className="addCommentPanel"> 
+                            <input type="text" placeholder="Digite o seu nome de usuário" className="input" value={commentAuthor} onChange={author => setCommentAuthor(author.target.value)}/>
+                            <TextareaAutosize placeholder="Conteúdo do comentário..." className="input textArea" value={commentContent} onChange={cont => setCommentContent(cont.target.value)}/>
+                            <Button onClick={handleAddComment}>Adicionar</Button>
+                        </div>
+                    </Typography>
+                </Box>
+                </Modal>
             </ContainerS>
         </PostProvider>
     );

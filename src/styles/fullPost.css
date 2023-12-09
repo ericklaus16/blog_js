@@ -18,7 +18,7 @@
 
 .headerPost {
     display: flex;
-    width: 80%;
+    width: 100%;
     justify-content: space-around;
 }
 
@@ -28,18 +28,19 @@
 
 .subtitlePost {
     font-size: 20px;
+    font-weight: 100;
 }
 
 .postAndComments {
     display: flex;
-    flex-direction: row;
-    width: 90%;
-    height: 100vh;
-    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 10vw;
+    height: 80%;
 }
 
 .postContent {
-    width: 80%;
+    width: 100%;
     height: 40vh;
     font-size: 16px;
 }
@@ -50,12 +51,30 @@
 }
 
 .comments {
-    height: 60vh;
-    width: 20vw;
+    height: 30vh;
+    width: 60vw;
     margin-top: 1vh;
+    overflow: auto;
+}
+
+.commentsButtons {
+    display: flex;
+}
+
+.commentButton {
+    margin-left: -10vw;
+}
+
+.addCommentPanel {
+    padding-top: 2vh;
+    border-top: 1px solid #0a70b8;
 }
 
 @media (min-width: 728px){
+    .postAndComments {
+        align-items: center;
+    }
+
     .titlePost {
         font-size: 46px;
     }

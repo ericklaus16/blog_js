@@ -6,7 +6,7 @@ export type CommentType = {
 
 export const Comment = (props: CommentType) => {
     return (
-        <div>
+        <div className="mb-4">
             <p>@{props.author} said: </p>
             <p>{props.content}</p>
         </div>
