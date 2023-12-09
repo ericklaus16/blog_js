@@ -34,15 +34,6 @@ body {
 
   .scrollbar::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: #000;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb {
-    background: #6EEB83;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #6EEB83;
   }
 }
 

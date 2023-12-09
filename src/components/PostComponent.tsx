@@ -18,7 +18,7 @@ export const Post = (props: PostInterface) => {
                     <p>{dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()} {monthNames[dateParsed.getMonth()]} {dateParsed.getFullYear()}</p>
                 </div>
             <div className="w-9/12">
-                <Link href={{pathname: "/post/[id]"}} as={`/post/${props.id}`} target={"_blank"}>
+                <Link href={{pathname: "/post/[id]"}} as={`/post/${props.id}`}>
                     <p className="text-green-blog title">{props.title.toUpperCase()}</p><br/>
                     <p className="content">{props.content}</p>
                 </Link>

@@ -12,6 +12,12 @@
     color: white;
 }
 
+.headerPost {
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+}
+
 .titlePost {
     font-size: 30px;
 }

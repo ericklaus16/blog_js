@@ -75,17 +75,21 @@ export const PostHandler = () => {
                 (
                 <div className="">
                     <div className="overflow-auto scrollbar posts">       
-                        {posts.slice((page) * rowsPerPage, (page + 1) * rowsPerPage).map((post, index) => (
-                            <Post
-                                key={post.id || posts.length - 1 - index}
-                                title={post["title"]}
-                                content={post["content"]}
-                                id={post["id"] ?? 0}
-                                tags={post["tags"]}
-                                date={post["date"]}
-                                author={post["author"]}
-                            />
-                        ))}  
+                    {posts
+                    .sort((a, b) => (b.id && a.id) ? b.id - a.id : 0) // Ordenar por id de forma decrescente
+                    .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+                    .map((post, index) => (
+                        <Post
+                            key={post.id || posts.length - 1 - index}
+                            title={post["title"]}
+                            content={post["content"]}
+                            id={post["id"] ?? 0}
+                            tags={post["tags"]}
+                            date={post["date"]}
+                            author={post["author"]}
+                        />
+                    ))
+                }
                     </div><br/>
                     <TablePagination
                     style={{color: "white"}}

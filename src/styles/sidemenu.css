@@ -30,6 +30,27 @@ i:hover {
     width: 100%;
 }
 
+.upperSearchPanel {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputSearch {
+    width: 80%;
+    padding: 1vh;
+    border: 1px solid #0a70b8;
+    border-radius: 10px;
+    color: #5a5a5a;
+}
+
+.foundPosts {
+    height: 30vh;
+    margin-top: 2vh;
+    overflow-y: auto;
+}
+
 @media (max-width: 1208px) {
     i {
         font-size: 2vh;
