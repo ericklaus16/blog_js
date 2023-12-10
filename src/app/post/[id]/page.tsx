@@ -132,8 +132,6 @@ const post = ({params}: {params: { id: string}}) => {
     }
 
     const handleAddComment = () => {
-        console.log("Autor: ", commentAuthor);
-        console.log("Conteúdo: ", commentContent);
         axios.post(`http://localhost:8080/posts/${params.id}/createComment`, {
             author: commentAuthor,
             comment: commentContent,
@@ -145,18 +143,12 @@ const post = ({params}: {params: { id: string}}) => {
         })
         .then(response => {
             if(response.status === 200){
-                console.log("Deu certo!");
-                /*
-                addPost({
-                    id: realId,
-                    title: title,
-                    content: content,
-                    date: new Date(),
-                    tags: tagsArrayFiltered,
-                    author: author,
-                })
-                */
-                setShowCommentsModal(false);
+                setComments((prevComments: CommentType[] | undefined) => {
+                    const commentsArray = prevComments || [];
+                    const novoComentario: CommentType = {author: commentAuthor, content: commentContent, date: new Date};
+                    return [...commentsArray, novoComentario];
+                });
+                //setShowCommentsModal(false);
                 setCommentAuthor("");
                 setCommentContent("");
             }

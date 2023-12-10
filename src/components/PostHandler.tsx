@@ -94,7 +94,7 @@ export const PostHandler = () => {
                     style={{color: "white"}}
                     className="pagination"
                     component="span"
-                    count={100}
+                    count={posts.length}
                     page={page}
                     onPageChange={handleNextPage}
                     rowsPerPage={rowsPerPage}
