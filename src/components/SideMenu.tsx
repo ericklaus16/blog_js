@@ -73,14 +73,14 @@ export const SideMenu = () => {
 
     const handleAddNewPost = () => {
         const tagsArray = tags.split(",").map(item=> item.trim());
-        const tagsArrayFiltered = tags.split(",").filter(item=> item.length >= 4).map(item=> item.trim());
+        const tagsArrayFiltered = tags.split(",").filter(item=> item.length >= 4 && item.length == item.replace(/ /g, "").length).map(item=> item.trim());
 
         axios.post('http://localhost:8080/create', {
-            title: title,
-            content: content,
+            title: title.trim(),
+            content: content.trim(),
             tags: tagsArrayFiltered,
             tagsOriginalSize: tagsArray.length,
-            author: author
+            author: (author.length == author.replace(/ /g, "").length) ? author : ' ' //autor não pode conter espaços em branco
         }, {
           headers: {
             'Accept': 'application/json',

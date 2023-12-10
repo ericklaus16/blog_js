@@ -95,10 +95,10 @@ const post = ({params}: {params: { id: string}}) => {
 
     const handleEditPost = () => {
         const tagsArray = tags.split(",").map(item=> item.trim());
-        const tagsArrayFiltered = tags.split(",").filter(item=> item.length >= 4).map(item=> item.trim());
+        const tagsArrayFiltered = tags.split(",").filter(item=> item.length >= 4 && item.length == item.replace(/ /g, "").length).map(item=> item.trim());
         axios.post(`http://localhost:8080/posts/${Number.parseInt(params.id)}/edit`, {
-            editedTitle: title,
-            editedContent: content,
+            editedTitle: title.trim(),
+            editedContent: content.trim(),
             editedTags: tagsArrayFiltered,
             editedTagsOriginalSize: tagsArray.length
         }, {
@@ -118,13 +118,14 @@ const post = ({params}: {params: { id: string}}) => {
                     tags: ["teste", "teste2"]
                 });
                 setShowEditModal(false);
+                setMsgError("");
             }
         })
         .catch(error => {
           console.error(error);
           setMsgError(error.response.data);
         });
-    }
+    };
 
     const handleRemovePost = () => {
         axios.get(`http://localhost:8080/posts/${params.id}/remove`)
@@ -134,12 +135,12 @@ const post = ({params}: {params: { id: string}}) => {
             }
         })
         document.location.assign("/");
-    }
+    };
 
     const handleAddComment = () => {
         axios.post(`http://localhost:8080/posts/${params.id}/createComment`, {
-            author: commentAuthor,
-            comment: commentContent,
+            author: (commentAuthor.length == commentAuthor.replace(/ /g, "").length) ? commentAuthor.trim() : ' ', //autor não pode conter espaços em branco
+            comment: commentContent.trim(),
         }, {
           headers: {
             'Accept': 'application/json',
@@ -162,7 +163,7 @@ const post = ({params}: {params: { id: string}}) => {
           console.error(error);
           setMsgError(error.response.data);
         });
-    }
+    };
 
     const actions = [
         { icon: <i className="bi-pencil-fill"/>, name: 'Editar', do: () => setShowEditModal(true)},
