@@ -103,6 +103,7 @@ export const SideMenu = () => {
                 setTitle("");
                 setContent("");
                 setTags("");
+                setAuthor("");
             }
         })
         .catch(error => {

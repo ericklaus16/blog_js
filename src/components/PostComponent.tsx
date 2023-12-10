@@ -17,12 +17,12 @@ export const Post = (props: PostInterface) => {
                 <div className="text-base pt-3 completeDate">
                     <p>{dateParsed.getDate() < 10 ? "0" + dateParsed.getDate() : dateParsed.getDate()} {monthNames[dateParsed.getMonth()]} {dateParsed.getFullYear()}</p>
                 </div>
-            <div className="w-9/12">
+            <div className="w-8/12">
                 <Link href={{pathname: "/post/[id]"}} as={`/post/${props.id}`}>
                     <p className="text-green-blog title">{props.title.toUpperCase()}</p><br/>
                     <p className="content">{props.content}</p>
                 </Link>
-                <div className="flex w-12/12 mt-4">
+                <div className="flex w-12/12 mt-4 tagDrop">
                     {props.tags.map((tag, index) => (
                         <Tag name={tag} key={index}/>
                     ))}

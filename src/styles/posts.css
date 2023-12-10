@@ -1,7 +1,7 @@
 .postsContainer {
     display: flex;
     width: 100vw;
-    height: 75vh;
+    height: 85vh;
     flex-direction: column;
     margin-top: 4rem;
     justify-content: center;
@@ -10,11 +10,12 @@
 
 .posts {
     height: 75vh;
+    width: 90vw;
     margin-left: 4rem;
 }
 
 .pagination {
-    width: 100vw;
+    width: 80vw; 
     height: 10vh;
 }
 

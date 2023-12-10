@@ -90,17 +90,19 @@ export const PostHandler = () => {
                         />
                     ))}
                     </div><br/>
-                    <TablePagination
-                    style={{color: "white"}}
-                    className="pagination"
-                    component="span"
-                    count={posts.length}
-                    page={page}
-                    onPageChange={handleNextPage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {setRowsPerPage(+event?.target.value)}}
-                    labelRowsPerPage={"Posts:"}
-                    />
+                    <div className="pagination">
+                        <TablePagination
+                        style={{color: "white"}}
+                        className=""
+                        component="span"
+                        count={posts.length}
+                        page={page}
+                        onPageChange={handleNextPage}
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => {setRowsPerPage(+event?.target.value)}}
+                        labelRowsPerPage={"Posts:"}
+                        />
+                    </div>
                 </div>
                 )
             }  
