@@ -71,9 +71,9 @@ app.post(`/create`, async (req, res) => { //inserção de um novo post
     }else if (content.length < 10) {
         res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
     }else if (tags.length < 1 || tagsSize != tagsOriginalSize) {
-        res.status(500).send("Adicione ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
+        res.status(500).send("Adicione ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres e não pode conter espaços.");
     }else if (author.length < 4) {
-        res.status(500).send("Digite um apelido que tenha ao menos 4 caracteres.");
+        res.status(500).send("O nome do usuário deve ter ao menos 4 caracteres e não pode conter espaços.");
     }else {
         const result = await pool.query (
             `INSERT INTO public.dadosblogjs (title, content, date, tags, author)
@@ -128,7 +128,7 @@ app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será 
     if (!author || !comment) {
         res.status(500).send("Preencha todos os campos.");
     }else if (author.length < 4) {
-        res.status(500).send("O nome do usuário deve ter ao menos 4 caracteres.");
+        res.status(500).send("O nome do usuário deve ter ao menos 4 caracteres e não pode conter espaços.");
     }else if (comment.length < 10) {
         res.status(500).send("O comentário deve ter ao menos 10 caracteres.");
     }else {
@@ -158,7 +158,7 @@ app.post(`/posts/:id/edit`, (req, res) => { //edição de posts
     }else if (editedContent.length < 10) {
         res.status(500).send("O conteúdo do post deve ter ao menos 10 caracteres.");
     }else if (editedTagsSize < 1 || editedTagsSize != editedTagsOriginalSize) {
-        res.status(500).send("Deve haver ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres.");
+        res.status(500).send("Deve haver ao menos uma tag. Obs: cada tag deve ter ao menos 4 caracteres e não pode conter espaços.");
     }else {
         console.log("Editando post...");
         pool.query(
