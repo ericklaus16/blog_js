@@ -110,10 +110,14 @@ const post = ({params}: {params: { id: string}}) => {
         .then(response => {
             if(response.status === 200){
                 console.log("Edição feita com sucesso.");
+                setPostData({
+                    author: post?.author ? post?.author : "",
+                    date: post?.date ? post?.date : new Date,
+                    title,
+                    content,
+                    tags: ["teste", "teste2"]
+                });
                 setShowEditModal(false);
-                setTitle("");
-                setContent("");
-                setTags("");
             }
         })
         .catch(error => {
@@ -201,11 +205,11 @@ const post = ({params}: {params: { id: string}}) => {
                         <Typography id="modal-modal-title" variant="h6" component="h2" style={{fontWeight: "bold"}}>
                         Deseja realmente remover este post?
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            <Button onClick={handleRemovePost}>Sim</Button>
+                        <Typography id="modal-modal-description" style={{display: "inline-block"}}>
+                            <Button className="removeButton" style={{marginRight: 10, padding: 4, backgroundColor: '#4CAF50'}} onClick={handleRemovePost}>Sim</Button>
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            <Button onClick={() => setShowRemoveModal(false)}>Não</Button>
+                        <Typography id="modal-modal-description" style={{display: "inline-block"}}>
+                            <Button className="removeButton" style={{backgroundColor: '#f44336', padding: 4}} onClick={() => setShowRemoveModal(false)}>Não</Button>
                         </Typography>
                     </Box>
                 </Modal>

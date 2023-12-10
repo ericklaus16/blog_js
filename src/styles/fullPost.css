@@ -70,6 +70,14 @@
     border-top: 1px solid #0a70b8;
 }
 
+.removeButton {
+    margin-top: 2vh;
+    width: 100px;
+    border-radius: 9999px;
+    color: white;
+    text-align: center;
+}
+
 @media (min-width: 728px){
     .postAndComments {
         align-items: center;
