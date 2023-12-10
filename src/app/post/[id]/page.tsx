@@ -225,24 +225,22 @@ const post = ({params}: {params: { id: string}}) => {
                                 <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>on {dataParsed.getDate() < 10 ? "0" + dataParsed.getDate() : dataParsed.getDate()} {monthNames[dataParsed.getMonth()]} {dataParsed.getFullYear()}</p>
                             </div>
                             
-                            <div className="actions">
-                                <SpeedDial 
-                                    ariaLabel="Post actions" 
-                                    icon={<i className="bi-chevron-down"/>}
-                                    direction="down"
-                                    className="dialButton"
-                                    >
-                                        { actions.map((action) => (
-                                            <SpeedDialAction
-                                                key={action.name}
-                                                tooltipTitle={action.name}
-                                                icon={action.icon}
-                                                onClick={action.do}
-                                            />
-                                        ))}
-                                </SpeedDial>
+                            <SpeedDial 
+                                ariaLabel="Post actions" 
+                                icon={<i className="bi-chevron-down"/>}
+                                direction="down"
+                                className="dialButton"
+                                >
+                                    { actions.map((action) => (
+                                        <SpeedDialAction
+                                            key={action.name}
+                                            tooltipTitle={action.name}
+                                            icon={action.icon}
+                                            onClick={action.do}
+                                        />
+                                    ))}
+                            </SpeedDial>
                                 
-                            </div>
                         </div>
                    
                         <div className="postContent has-dropcap overflow-auto scrollbar">

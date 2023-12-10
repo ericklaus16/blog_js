@@ -13,7 +13,7 @@
 }
 
 .content {
-    font-size: 16px;
+    font-size: 24px;
 }
 
 .completeDate {
@@ -38,11 +38,11 @@
 @media (max-width: 768px){
 
     .title {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .content {
-        font-size: 14px;
+        font-size: 17px;
     }
 
     .post {

@@ -20,14 +20,16 @@
     display: flex;
     width: 100%;
     justify-content: space-around;
+    height: 32vh;
 }
 
 .titlePost {
-    font-size: 30px;
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .subtitlePost {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 100;
 }
 
@@ -45,9 +47,6 @@
     font-size: 16px;
 }
 
-.actions {
-}
-
 .commentsArea {
     border: 1px solid #0a70b8;
     padding: 1vh 1vw;
@@ -58,14 +57,6 @@
     width: 60vw;
     margin-top: 1vh;
     overflow: auto;
-}
-
-.commentsButtons {
-    display: flex;
-}
-
-.commentButton {
-    margin-left: -10vw;
 }
 
 .addCommentPanel {
@@ -87,6 +78,24 @@
     }
 
     .titlePost {
+        font-size: 38px;
+    }
+
+    .subtitlePost{
+        font-size: 26px;
+    }
+
+    .postContent {
+        font-size: 28px;
+    }
+}
+
+@media (min-width: 1200px){
+    .postAndComments {
+        align-items: center;
+    }
+
+    .titlePost {
         font-size: 46px;
     }
 
@@ -97,4 +106,5 @@
     .postContent {
         font-size: 22px;
     }
+
 }
