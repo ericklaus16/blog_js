@@ -167,6 +167,7 @@ const post = ({params}: {params: { id: string}}) => {
     const actions = [
         { icon: <i className="bi-pencil-fill"/>, name: 'Editar', do: () => setShowEditModal(true)},
         { icon: <i className="bi-trash3-fill"/>, name: 'Remover', do: () => setShowRemoveModal(true)},
+        { icon: <i className="bi-chat-dots"/>, name: "Comentários", do: () => setShowCommentsModal(true)},
     ];
 
 
@@ -224,21 +225,24 @@ const post = ({params}: {params: { id: string}}) => {
                                 <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>on {dataParsed.getDate() < 10 ? "0" + dataParsed.getDate() : dataParsed.getDate()} {monthNames[dataParsed.getMonth()]} {dataParsed.getFullYear()}</p>
                             </div>
                             
-                            <SpeedDial 
-                                ariaLabel="Post actions" 
-                                icon={<i className="bi-chevron-down"/>}
-                                direction="down"
-                                className="dialButton"
-                                >
-                                    { actions.map((action) => (
-                                        <SpeedDialAction
-                                            key={action.name}
-                                            tooltipTitle={action.name}
-                                            icon={action.icon}
-                                            onClick={action.do}
-                                        />
-                                    ))}
-                            </SpeedDial>
+                            <div className="actions">
+                                <SpeedDial 
+                                    ariaLabel="Post actions" 
+                                    icon={<i className="bi-chevron-down"/>}
+                                    direction="down"
+                                    className="dialButton"
+                                    >
+                                        { actions.map((action) => (
+                                            <SpeedDialAction
+                                                key={action.name}
+                                                tooltipTitle={action.name}
+                                                icon={action.icon}
+                                                onClick={action.do}
+                                            />
+                                        ))}
+                                </SpeedDial>
+                                
+                            </div>
                         </div>
                    
                         <div className="postContent has-dropcap overflow-auto scrollbar">
@@ -247,8 +251,6 @@ const post = ({params}: {params: { id: string}}) => {
                             </p>
                         </div>
                     </div>
-
-                    <button className="commentButton" onClick={() => setShowCommentsModal(true)}><i className="bi-chat-dots text-xl"></i></button>
                     </div>)}
                 </div>
 

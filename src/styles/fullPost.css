@@ -45,6 +45,9 @@
     font-size: 16px;
 }
 
+.actions {
+}
+
 .commentsArea {
     border: 1px solid #0a70b8;
     padding: 1vh 1vw;
@@ -95,7 +98,3 @@
         font-size: 22px;
     }
 }
-/*
-max-w-7xl h-3/6 text-xl
-w-screen h-screen flex items-center justify-center flex-col bg-background
-*/
