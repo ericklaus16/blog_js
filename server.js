@@ -134,7 +134,7 @@ app.post(`/posts/:id/createComment`, (req, res) => { //um esboço de como será 
     }else {
         let postId = req.params.id;
         let date = new Date;
-        pool.query(`INSERT INTO public.comentarios (author, comment, date, "postId")
+        pool.query(`INSERT INTO public.comentarios (author, content, date, "postId")
         VALUES ($1, $2, $3, $4) RETURNING id`, [author, comment, date, postId]);
 
         res.sendStatus(200);
