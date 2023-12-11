@@ -1,0 +1,110 @@
+.menuPanel {
+    height: 14vh;
+}
+
+.containerFullPost {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+}
+
+.content {
+    width: 80%;
+}
+
+.headerPost {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    height: 32vh;
+}
+
+.titlePost {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.subtitlePost {
+    font-size: 18px;
+    font-weight: 100;
+}
+
+.postAndComments {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 10vw;
+    height: 80%;
+}
+
+.postContent {
+    width: 100%;
+    height: 40vh;
+    font-size: 16px;
+}
+
+.commentsArea {
+    border: 1px solid #0a70b8;
+    padding: 1vh 1vw;
+}
+
+.comments {
+    height: 30vh;
+    width: 60vw;
+    margin-top: 1vh;
+    overflow: auto;
+}
+
+.addCommentPanel {
+    padding-top: 2vh;
+    border-top: 1px solid #0a70b8;
+}
+
+.removeButton {
+    margin-top: 2vh;
+    width: 100px;
+    border-radius: 9999px;
+    color: white;
+    text-align: center;
+}
+
+@media (min-width: 728px){
+    .postAndComments {
+        align-items: center;
+    }
+
+    .titlePost {
+        font-size: 38px;
+    }
+
+    .subtitlePost{
+        font-size: 26px;
+    }
+
+    .postContent {
+        font-size: 28px;
+    }
+}
+
+@media (min-width: 1200px){
+    .postAndComments {
+        align-items: center;
+    }
+
+    .titlePost {
+        font-size: 46px;
+    }
+
+    .subtitlePost{
+        font-size: 30px;
+    }
+
+    .postContent {
+        font-size: 22px;
+    }
+
+}

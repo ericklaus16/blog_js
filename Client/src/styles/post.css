@@ -1,0 +1,66 @@
+.post {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+    width: 80vw;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.content {
+    font-size: 24px;
+}
+
+.completeDate {
+    display: none;
+}
+
+.commonDate {
+    display: block;
+}
+
+@media (max-width: 1280px){
+    .title {
+        font-size: 30px;
+    }
+
+    .content {
+        font-size: 20px;
+    }
+}
+
+
+@media (max-width: 768px){
+
+    .title {
+        font-size: 22px;
+    }
+
+    .content {
+        font-size: 17px;
+    }
+
+    .post {
+        flex-direction: column-reverse;
+    }
+
+    .completeDate {
+        display: block;
+    }
+
+    .commonDate {
+        display: none;
+    }
+}
+
+
+@media (max-width: 300px){
+    .tagDrop {
+        flex-wrap: wrap;
+    }
+}
