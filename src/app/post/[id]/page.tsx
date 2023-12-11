@@ -178,7 +178,11 @@ const post = ({params}: {params: { id: string}}) => {
                 <SideMenu />
                 <Modal //modal para editar posts
                     open={showEditModal}
-                    onClose={() => setShowEditModal(false)}
+                    onClose={() => {
+                            setShowEditModal(false);
+                            setMsgError("");
+                        }
+                    }
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
@@ -198,7 +202,11 @@ const post = ({params}: {params: { id: string}}) => {
 
                 <Modal //modal para confirmar remoção de um post
                     open={showRemoveModal}
-                    onClose={() => setShowRemoveModal(false)}
+                    onClose={() => {
+                            setShowRemoveModal(false);
+                            setMsgError("");
+                        }
+                    }
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
@@ -223,7 +231,9 @@ const post = ({params}: {params: { id: string}}) => {
                             <div className="mb-10 w-76pc text-left">
                                 <p className={`${dms_d.className} titlePost text-green-blog`}>{post.title}</p>
                                 <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>written by <Author name={post.author}></Author></p>
-                                <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>on {dataParsed.getDate() < 10 ? "0" + dataParsed.getDate() : dataParsed.getDate()} {monthNames[dataParsed.getMonth()]} {dataParsed.getFullYear()}</p>
+                                <p className={`${lex_d.className} subtitlePost font-light text-subtitle-gray`}>
+                                    on {dataParsed.getDate() < 10 ? "0" + dataParsed.getDate() : dataParsed.getDate()} {monthNames[dataParsed.getMonth()]} {dataParsed.getFullYear()} at {dataParsed.getHours() < 10 ? "0" + dataParsed.getHours() : dataParsed.getHours()}:{dataParsed.getMinutes() < 10 ? "0" + dataParsed.getMinutes() : dataParsed.getMinutes()}
+                                </p>
                             </div>
                             
                             <SpeedDial 
@@ -255,7 +265,11 @@ const post = ({params}: {params: { id: string}}) => {
 
                 <Modal // Modal dos comentários
                 open={showCommentsModal} 
-                onClose={() => setShowCommentsModal(false)}
+                onClose={() => {
+                        setShowCommentsModal(false);
+                        setMsgError("");
+                    }
+                }
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 >
